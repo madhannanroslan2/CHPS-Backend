@@ -1,3 +1,4 @@
+from app.controllers import ai_controller
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.connection import Base, engine
@@ -24,6 +25,7 @@ app.add_middleware(
 )
 
 # Route definitions
+app.include_router(ai_controller.router)
 app.include_router(user_controller.router)
 app.include_router(households_controller.router)
 app.include_router(residents_controller.router)
