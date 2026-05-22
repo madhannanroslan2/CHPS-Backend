@@ -7,7 +7,7 @@ from app.controllers import (
     immunization_controller, medical_history_controller, reports_controller
 )
 
-# Awtomatikong paggawa ng mga secure tables sa Neon database mo cloud
+# Automatically create secure tables in your Neon cloud database
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
