@@ -9,7 +9,7 @@ from typing import List
 
 router = APIRouter(prefix="/medical-histories", tags=["Medical History"])
 
-@router.post("/", response_model=MedicalHistoryResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=MedicalHistoryResponse, status_code=status.HTTP_201_CREATED)
 def add_medical_history(data: MedicalHistoryCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     new_med = MedicalHistoryModel(**data.model_dump())
     db.add(new_med)
@@ -17,7 +17,7 @@ def add_medical_history(data: MedicalHistoryCreate, db: Session = Depends(get_db
     db.refresh(new_med)
     return new_med
 
-@router.get("/", response_model=List[MedicalHistoryResponse])
+@router.get("", response_model=List[MedicalHistoryResponse])
 def get_medical_histories(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return db.query(MedicalHistoryModel).all()
 

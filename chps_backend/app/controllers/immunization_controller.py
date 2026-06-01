@@ -9,7 +9,7 @@ from typing import List
 
 router = APIRouter(prefix="/immunizations", tags=["Immunizations"])
 
-@router.post("/", response_model=ImmunizationResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=ImmunizationResponse, status_code=status.HTTP_201_CREATED)
 def add_immunization(data: ImmunizationCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     new_imm = ImmunizationModel(**data.model_dump())
     db.add(new_imm)
@@ -17,7 +17,7 @@ def add_immunization(data: ImmunizationCreate, db: Session = Depends(get_db), cu
     db.refresh(new_imm)
     return new_imm
 
-@router.get("/", response_model=List[ImmunizationResponse])
+@router.get("", response_model=List[ImmunizationResponse])
 def get_immunizations(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return db.query(ImmunizationModel).all()
 

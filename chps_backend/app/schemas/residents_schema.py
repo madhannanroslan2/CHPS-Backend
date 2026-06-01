@@ -8,6 +8,8 @@ class ResidentCreate(BaseModel):
     last_name: str
     gender: str
     birth_date: str
+    age: Optional[int] = None
+    contact_number: Optional[str] = None
 
 class ResidentUpdate(BaseModel):
     household_id: Optional[int] = None
@@ -15,6 +17,8 @@ class ResidentUpdate(BaseModel):
     last_name: Optional[str] = None
     gender: Optional[str] = None
     birth_date: Optional[str] = None
+    age: Optional[int] = None
+    contact_number: Optional[str] = None
 
 class ResidentResponse(BaseModel):
     id: int
@@ -23,6 +27,8 @@ class ResidentResponse(BaseModel):
     last_name: str
     gender: str
     birth_date: str
+    age: Optional[int] = None
+    contact_number: Optional[str] = None
     created_at: datetime
 
     class Config:

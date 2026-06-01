@@ -9,7 +9,7 @@ from typing import List
 
 router = APIRouter(prefix="/households", tags=["Households"])
 
-@router.post("/", response_model=HouseholdResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=HouseholdResponse, status_code=status.HTTP_201_CREATED)
 def create_household(household: HouseholdCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     if db.query(HouseholdModel).filter(HouseholdModel.household_number == household.household_number).first():
         raise HTTPException(status_code=400, detail="Household number already exists")
@@ -19,7 +19,7 @@ def create_household(household: HouseholdCreate, db: Session = Depends(get_db), 
     db.refresh(new_house)
     return new_house
 
-@router.get("/", response_model=List[HouseholdResponse])
+@router.get("", response_model=List[HouseholdResponse])
 def get_households(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return db.query(HouseholdModel).all()
 

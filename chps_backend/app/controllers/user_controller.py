@@ -1,13 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
 from app.database.connection import get_db
 from app.models.user_model import UserModel
 from app.schemas.user_schema import UserCreate, UserUpdate, UserResponse
 from app.security import hash_password, verify_password, create_access_token, get_current_user
 from typing import List
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/users", tags=["Users"])
+
+class GoogleAuthRequest(BaseModel):
+    id_token: str
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
@@ -31,7 +37,30 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     token = create_access_token(data={"sub": user.email})
     return {"access_token": token, "token_type": "bearer"}
 
-@router.get("/", response_model=List[UserResponse])
+@router.post("/auth/google")
+def google_auth(req: GoogleAuthRequest, db: Session = Depends(get_db)):
+    try:
+        info = id_token.verify_oauth2_token(req.id_token, google_requests.Request())
+        email = info.get("email")
+        if not email:
+            raise HTTPException(status_code=400, detail="No email from Google")
+        user = db.query(UserModel).filter(UserModel.email == email).first()
+        if not user:
+            username = info.get("name", email.split("@")[0])
+            user = UserModel(
+                username=username,
+                email=email,
+                hashed_password=hash_password("google_oauth_user")
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        token = create_access_token(data={"sub": user.email})
+        return {"access_token": token, "token_type": "bearer"}
+    except ValueError:
+        raise HTTPException(status_code=401, detail="Invalid Google token")
+
+@router.get("", response_model=List[UserResponse])
 def get_users(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return db.query(UserModel).all()
 

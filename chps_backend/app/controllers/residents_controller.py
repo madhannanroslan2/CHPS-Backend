@@ -9,7 +9,7 @@ from typing import List
 
 router = APIRouter(prefix="/residents", tags=["Residents"])
 
-@router.post("/", response_model=ResidentResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=ResidentResponse, status_code=status.HTTP_201_CREATED)
 def create_resident(resident: ResidentCreate, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     new_resident = ResidentModel(**resident.model_dump())
     db.add(new_resident)
@@ -17,7 +17,7 @@ def create_resident(resident: ResidentCreate, db: Session = Depends(get_db), cur
     db.refresh(new_resident)
     return new_resident
 
-@router.get("/", response_model=List[ResidentResponse])
+@router.get("", response_model=List[ResidentResponse])
 def get_residents(db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     return db.query(ResidentModel).all()
 

@@ -12,6 +12,8 @@ class ResidentModel(Base):
     last_name = Column(String, nullable=False)
     gender = Column(String, nullable=False)
     birth_date = Column(String, nullable=False)
+    age = Column(Integer, nullable=True)
+    contact_number = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     household = relationship("HouseholdModel", back_populates="residents")
