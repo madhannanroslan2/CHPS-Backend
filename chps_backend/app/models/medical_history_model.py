@@ -12,5 +12,6 @@ class MedicalHistoryModel(Base):
     treatment = Column(String, nullable=True)
     remarks = Column(String, nullable=True)
     checkup_date = Column(DateTime, default=datetime.utcnow)
+    disease_type = Column(String, nullable=True)
 
     resident = relationship("ResidentModel", back_populates="medical_histories")

@@ -10,6 +10,9 @@ class ResidentCreate(BaseModel):
     birth_date: str
     age: Optional[int] = None
     contact_number: Optional[str] = None
+    municipality: Optional[str] = None
+    barangay: Optional[str] = None
+    purok: Optional[str] = None
 
 class ResidentUpdate(BaseModel):
     household_id: Optional[int] = None
@@ -19,6 +22,9 @@ class ResidentUpdate(BaseModel):
     birth_date: Optional[str] = None
     age: Optional[int] = None
     contact_number: Optional[str] = None
+    municipality: Optional[str] = None
+    barangay: Optional[str] = None
+    purok: Optional[str] = None
 
 class ResidentResponse(BaseModel):
     id: int
@@ -29,6 +35,11 @@ class ResidentResponse(BaseModel):
     birth_date: str
     age: Optional[int] = None
     contact_number: Optional[str] = None
+    municipality: Optional[str] = None
+    barangay: Optional[str] = None
+    purok: Optional[str] = None
+    household_number: Optional[str] = None
+    head_of_family: Optional[str] = None
     created_at: datetime
 
     class Config:

@@ -14,8 +14,12 @@ class ResidentModel(Base):
     birth_date = Column(String, nullable=False)
     age = Column(Integer, nullable=True)
     contact_number = Column(String, nullable=True)
+    municipality = Column(String, nullable=True)
+    barangay = Column(String, nullable=True)
+    purok = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     household = relationship("HouseholdModel", back_populates="residents")
     immunizations = relationship("ImmunizationModel", back_populates="resident", cascade="all, delete-orphan")
     medical_histories = relationship("MedicalHistoryModel", back_populates="resident", cascade="all, delete-orphan")
+    prenatal_postnatal = relationship("PrenatalPostnatalModel", back_populates="resident", cascade="all, delete-orphan")

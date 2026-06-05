@@ -12,6 +12,13 @@ class MedicalHistoryItem(BaseModel):
     treatment: Optional[str] = None
     remarks: Optional[str] = None
     checkup_date: Optional[str] = None
+    disease_type: Optional[str] = None
+
+class PrenatalPostnatalItem(BaseModel):
+    care_type: str
+    date_given: Optional[str] = None
+    administered_by: str
+    notes: Optional[str] = None
 
 class PatientResponse(BaseModel):
     id: int
@@ -23,10 +30,13 @@ class PatientResponse(BaseModel):
     age: Optional[int] = None
     contact_number: Optional[str] = None
     household_number: Optional[str] = None
-    purok: Optional[str] = None
     head_of_family: Optional[str] = None
+    municipality: Optional[str] = None
+    barangay: Optional[str] = None
+    purok: Optional[str] = None
     immunizations: list[ImmunizationItem] = []
     medical_histories: list[MedicalHistoryItem] = []
+    prenatal_postnatal: list[PrenatalPostnatalItem] = []
 
     class Config:
         from_attributes = True
